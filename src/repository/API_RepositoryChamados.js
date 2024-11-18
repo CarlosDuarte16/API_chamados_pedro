@@ -1,5 +1,7 @@
 import con from './connection.js';
 
+// Functions CRUD Table Chamados \/ \/ \/ \/
+
 export async function inserirChamado(chamado) {
   const comando = `
     INSERT INTO Chamado (nm_titulo, ds_informacoes, ds_impacto, dt_ocorrencia, usuario_id)
@@ -65,3 +67,39 @@ export async function deletarChamado(id) {
 
   await con.query(comando, [id]);
 }
+
+// Functions CRUD Table Chamados ^ ^ ^
+
+// Functions CRUD Table Usuario \/\/\/
+
+
+export async function inserirUsuario(usuario) {
+  const comando = `
+    INSERT INTO Usuario (nome, email, funcao)
+    VALUES (?, ?, ?)
+  `;
+
+  const [resposta] = await con.query(comando, [
+    usuario.nome,
+    usuario.email,
+    usuario.funcao,
+  ]);
+
+  return resposta.insertId; 
+};
+
+export async function consultarUsuarioPorEmail(email) {
+  const comando = `
+    SELECT id, nome, email, funcao
+    FROM Usuario
+    WHERE email = ?
+  `;
+
+  const [resposta] = await con.query(comando, [email]);
+  return resposta[0];
+}
+
+
+
+
+

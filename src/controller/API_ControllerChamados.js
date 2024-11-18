@@ -73,3 +73,34 @@ endpoint.delete('/chamado/:id', async (req, resp) => {
   }
 });
 
+// Inserir usuario
+
+endpoint.post('/usuario', async (req, resp) => {
+  try {
+    const usuario = req.body;
+
+    const id = await db.inserirUsuario(usuario);
+    resp.send({ novoId: id });
+  } catch (err) {
+    resp.status(400).send({ erro: err.message });
+  }
+});
+
+// Consultar usuario
+
+endpoint.get('/usuario', async (req, resp) => {
+  try {
+    const email = req.query.email;
+
+    const usuario = await db.consultarUsuarioPorEmail(email);
+
+    if (!usuario) {
+      return resp.status(404).send({ erro: 'Usuário não encontrado' });
+    }
+
+    resp.send(usuario);
+  } catch (err) {
+    resp.status(400).send({ erro: err.message });
+  }
+});
+
