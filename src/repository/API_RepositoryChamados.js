@@ -21,13 +21,20 @@ export async function inserirChamado(chamado) {
 
 export async function consultarChamados() {
   const comando = `
-    SELECT c.id, c.nm_titulo, c.ds_informacoes, c.ds_impacto, c.dt_ocorrencia, u.nm_usuario AS usuario_responsavel
+    SELECT 
+      c.id AS id,
+      c.nm_titulo AS titulo,
+      c.ds_informacoes AS informacoes,
+      c.ds_impacto AS impacto,
+      c.dt_ocorrencia AS data_ocorrencia,
+      u.nome AS usuario_responsavel
     FROM Chamado c
     LEFT JOIN Usuario u ON c.usuario_id = u.id
   `;
 
-  const [resposta] = await con.query(comando);
-  return resposta;
+  let resposta = await con.query(comando);
+  let registros = resposta[0]; 
+  return registros; 
 }
 
 
